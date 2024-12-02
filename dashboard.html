@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome, <span id="studentName">Student</span></h1>
+        <button id="logoutBtn">Logout</button>
+    </header>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <ul>
+                <li><a href="#profile"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="#events"><i class="fas fa-calendar-alt"></i> Events</a></li>
+                <li><a href="#courses"><i class="fas fa-book"></i> Courses</a></li>
+                <li><a href="#grades"><i class="fas fa-chart-line"></i> Grades</a></li>
+            </ul>
+        </nav>
+        <main class="content">
+            <section id="profile" class="dashboard-section">
+                <h2>Student Profile</h2>
+                <div class="profile-info">
+                    <img src="default-avatar.png" alt="Profile Picture" id="profilePic">
+                    <p>ID: <span id="studentId"></span></p>
+                    <p>Email: <span id="studentEmail"></span></p>
+                    <p>Department: <span id="studentDepartment"></span></p>
+                </div>
+            </section>
+            <section id="events" class="dashboard-section">
+                <h2>Upcoming Events</h2>
+                <div class="event-list">
+                    <div class="event">
+                        <h3>Freshers Induction</h3>
+                        <p>Date: September 02, 2024</p>
+                        <p>Location: Basement Auditorium, UTD-1, CSVTU Bhilai</p>
+                        <a href="r1.html" class="btn">Register</a>
+                    </div>
+                    <div class="event">
+                        <h3>Teachers Day Celebration 2024</h3>
+                        <p>Date: September 05, 2024</p>
+                        <p>Location: Basement Auditorium, UTD-1, CSVTU Bhilai</p>
+                        <a href="r1.html" class="btn">Register</a>
+                    </div>
+                    <div class="event">
+                        <h3>Ganesh Chaturthi</h3>
+                        <p>Date: September 07, 2024</p>
+                        <p>Location: Basement Auditorium, UTD-1, CSVTU Bhilai</p>
+                        <a href="r1.html" class="btn">Register</a>
+                    </div>
+                </div>
+            </section>
+            <!-- Add more sections for courses and grades as needed -->
+        </main>
+    </div>
+    <script src="dashboard.js"></script>
+    <script>
+        // Check if user is logged in
+        function checkLogin() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                window.location.href = 'index.html'; // Redirect to login page if not logged in
+            } else {
+                // Load user data (replace with actual data fetching)
+                document.getElementById('studentName').textContent = 'John Doe';
+                document.getElementById('studentId').textContent = 'STU001';
+                document.getElementById('studentEmail').textContent = 'john.doe@example.com';
+                document.getElementById('studentDepartment').textContent = 'Computer Science';
+            }
+        }
+
+        // Run login check when page loads
+        window.onload = checkLogin;
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

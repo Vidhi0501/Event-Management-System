@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Event - ZENITH</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .create-event-form {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h2 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #45a049;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: #666;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #555;
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+                <h1>ZENITH</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- Create Event Form -->
+    <div class="container">
+        <div class="create-event-form">
+            <div class="form-header">
+                <h2>Create New Event</h2>
+                <p>Fill in the details for the upcoming event</p>
+            </div>
+
+            <form id="createEventForm">
+                <div class="form-group">
+                    <label for="eventName">Event Name</label>
+                    <input type="text" id="eventName" name="eventName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventDate">Event Date</label>
+                    <input type="date" id="eventDate" name="eventDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventLocation">Location</label>
+                    <input type="text" id="eventLocation" name="eventLocation" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="guestOfHonor">Guest of Honor</label>
+                    <input type="text" id="guestOfHonor" name="guestOfHonor">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Performances</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dance" name="performances" value="dance">
+                            <label for="dance">Dance</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="singing" name="performances" value="singing">
+                            <label for="singing">Singing</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="speech" name="performances" value="speech">
+                            <label for="speech">Speech</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="skit" name="performances" value="skit">
+                            <label for="skit">Skit</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Create Event</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoNxIs855O9WkiLOJkXTf4Kg45EK-Cocs",
+            authDomain: "vetrivel-c8711.firebaseapp.com",
+            databaseURL: "https://vetrivel-c8711-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "vetrivel-c8711",
+            storageBucket: "vetrivel-c8711.appspot.com",
+            messagingSenderId: "123328633210",
+            appId: "1:123328633210:web:797094ecd85111b2011ec3"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Check if user is editor
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            database.ref('users/' + user.uid).once('value')
+                .then((snapshot) => {
+                    const userData = snapshot.val();
+                    const isEditor = userData && userData.isEditor === true;
+                    
+                    if (!isEditor) {
+                        window.location.href = 'index.html';
+                    }
+                });
+        });
+
+        // Handle form submission
+        document.getElementById('createEventForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const eventData = {
+                eventName: document.getElementById('eventName').value,
+                eventDate: document.getElementById('eventDate').value,
+                location: document.getElementById('eventLocation').value,
+                guestOfHonor: document.getElementById('guestOfHonor').value,
+                description: document.getElementById('description').value,
+                performances: Array.from(document.querySelectorAll('input[name="performances"]:checked'))
+                    .map(cb => cb.value),
+                createdAt: new Date().toISOString(),
+                status: 'upcoming'
+            };
+
+            // Save to Firebase
+            database.ref('events').push(eventData)
+                .then(() => {
+                    alert('Event created successfully!');
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    console.error('Error creating event:', error);
+                    alert('Error creating event: ' + error.message);
+                });
+        });
+    </script>
+</body>
+</html> 
